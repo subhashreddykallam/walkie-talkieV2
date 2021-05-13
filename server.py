@@ -4,8 +4,8 @@ import threading
 frames = []
 
 HOST = '0.0.0.0'                 # Symbolic name meaning all available interfaces
-RECV_PORT = 5000              # Arbitrary non-privileged port
-SEND_PORT = 6000
+RECV_PORT = 7000              # Arbitrary non-privileged port
+SEND_PORT = 8000
 recvSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sendSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 recvSocket.bind((HOST, RECV_PORT))

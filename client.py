@@ -12,8 +12,8 @@ RECORD_SECONDS = 2
 
 # HOST = '127.0.0.1'
 HOST = '65.1.163.34'    # The remote host
-SEND_PORT = 5000              # The same port as used by the server
-RECV_PORT = 6000
+SEND_PORT = 7000              # The same port as used by the server
+RECV_PORT = 8000
 
 sendSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 recvSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
