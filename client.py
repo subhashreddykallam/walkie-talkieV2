@@ -1,6 +1,7 @@
 import socket
 import pyaudio
 import tkinter as tk
+from tkinter import scrolledtext
 import sys
 import threading
 
@@ -40,7 +41,7 @@ def recordAndSend(miniDisplay):
     return
 
 
-def recieve(miniDisplay):
+def receive(miniDisplay):
     miniDisplay.insert(tk.END, 'retreiving message...\n')
     recvSocket.connect((HOST, RECV_PORT))
     stream = p.open(format=FORMAT, channels=CHANNELS, rate=RATE,
@@ -123,12 +124,9 @@ class callPage(tk.Frame):
 
         message_label = tk.Label(self, text="Status", font=("Arial,12"))
         message_label.grid(row=1, column=0, columnspan=3,
-                           padx=10, pady=10, sticky="NSEW")
+                           padx=10, pady=5, sticky="NSEW")
 
-        scrollbar_y = tk.Scrollbar(self)
-        scrollbar_y.grid(row=4, column=3, rowspan=6)
-
-        miniDisplay = tk.Text(self, height=8, width=35, yscrollcommand=scrollbar_y.set,
+        miniDisplay = scrolledtext.ScrolledText(self, height=8, width=35,
                               bg="Grey", fg="White")
         miniDisplay.grid(row=4, column=0, rowspan=3,
                          columnspan=3, sticky="NSEW")
@@ -140,17 +138,17 @@ class callPage(tk.Frame):
         waitRbtn = tk.Radiobutton(self, text="Wait", variable=var, value=2,
                                   command=lambda: modeSelect())
 
-        recvRbtn = tk.Radiobutton(self, text="Recieve", variable=var, value=3,
+        recvRbtn = tk.Radiobutton(self, text="receive", variable=var, value=3,
                                   command=lambda: modeSelect())
 
-        sendRbtn.grid(row=14, column=0,padx=10, pady=10, sticky="nsew")
-        waitRbtn.grid(row=14, column=1,padx=10, pady=10, sticky="nsew")
-        recvRbtn.grid(row=14, column=2,padx=10, pady=10, sticky="nsew")
+        sendRbtn.grid(row=8, column=0,padx=10, pady=5, sticky="nsew")
+        waitRbtn.grid(row=8, column=1,padx=10, pady=5, sticky="nsew")
+        recvRbtn.grid(row=8, column=2,padx=10, pady=5, sticky="nsew")
 
         disconnectBtn = tk.Button(
             self, text="Disconnect", width=10, command=lambda: disconnectBtn_clicked())
-        disconnectBtn.grid(row=15, column=0, columnspan=2,
-                           padx=10, pady=10, sticky="nsew")
+        disconnectBtn.grid(row=9, column=0, columnspan=2,
+                           padx=10, pady=5, sticky="nsew")
 
         def modeSelect():
             if var.get() == 1:
@@ -159,10 +157,9 @@ class callPage(tk.Frame):
             elif var.get() == 2:
                 pass
             else:
-                t = threading.Thread(target=recieve, args = (miniDisplay, ))
+                t = threading.Thread(target=receive, args = (miniDisplay, ))
                 t.start()
         def disconnectBtn_clicked():
-            print(username, contact)
             sys.exit(0)
 
 
