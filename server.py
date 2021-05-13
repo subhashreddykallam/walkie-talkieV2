@@ -1,15 +1,7 @@
 import socket
-import pyaudio
-import wave
 import threading
 
-FORMAT = pyaudio.paInt16
-CHANNELS = 1
-RATE = 44100
-WAVE_OUTPUT_FILENAME = "server_output.wav"
 frames = []
-
-p = pyaudio.PyAudio()
 
 HOST = '0.0.0.0'                 # Symbolic name meaning all available interfaces
 RECV_PORT = 5000              # Arbitrary non-privileged port

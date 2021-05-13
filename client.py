@@ -10,8 +10,8 @@ CHANNELS = 1
 RATE = 44100
 RECORD_SECONDS = 2
 
-HOST = '127.0.0.1'
-# HOST = '65.1.163.34'    # The remote host
+# HOST = '127.0.0.1'
+HOST = '65.1.163.34'    # The remote host
 SEND_PORT = 5000              # The same port as used by the server
 RECV_PORT = 6000
 
