@@ -12,9 +12,9 @@ RATE = 44100
 RECORD_SECONDS = 2
 
 # HOST = '127.0.0.1'
-HOST = '65.1.163.34'    # The remote host
-SEND_PORT = 7000              # The same port as used by the server
-RECV_PORT = 8000
+HOST = '65.1.163.34'          # The remote host
+SEND_PORT = 7000              # The same port used by the server to receive
+RECV_PORT = 8000              # The same port used by the server to send =
 
 sendSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 recvSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -26,7 +26,7 @@ username, contact = "", ""
 def recordAndSend(miniDisplay):
     sendSocket.connect((HOST, SEND_PORT))
     stream = p.open(format=FORMAT, channels=CHANNELS, rate=RATE,
-                    input=True, frames_per_buffer=CHUNK)
+                    input=True, frames_per_buffer=CHUNK)  # input stream object
     miniDisplay.insert(tk.END, 'recording...\n')
 
     for i in range(0, int(RATE/CHUNK*RECORD_SECONDS)):
@@ -45,14 +45,13 @@ def receive(miniDisplay):
     miniDisplay.insert(tk.END, 'retreiving message...\n')
     recvSocket.connect((HOST, RECV_PORT))
     stream = p.open(format=FORMAT, channels=CHANNELS, rate=RATE,
-                    output=True, frames_per_buffer=CHUNK)
+                    output=True, frames_per_buffer=CHUNK)       # output stream object
     data = recvSocket.recv(1024)
 
     while data:
         stream.write(data)
         data = recvSocket.recv(1024)
 
-    print("over")
     stream.stop_stream()
     stream.close()
     recvSocket.close()
@@ -77,7 +76,7 @@ class page(tk.Tk):
         for f in (homePage, callPage):
             frame = f(container, self)
             self.frames[f] = frame
-            frame.grid(row=0, column=0, sticky="nsew")
+            frame.grid(row=0, column=0, sticky="nsew")            #linking frames to the page
 
         self.show_frame(homePage)
 
@@ -85,7 +84,7 @@ class page(tk.Tk):
         if cont == homePage:
             self.title("Walkie-Talkie Homepage")
         else:
-            self.title("Walkie-Talkie Calling Interface")
+            self.title("Walkie-Talkie Audio Interface")
         frame = self.frames[cont]
         frame.tkraise()
 
@@ -114,7 +113,7 @@ class homePage(tk.Frame):
             global username, contact
             username = entry_username.get()
             contact = entry_contact.get()
-            controller.show_frame(callPage)
+            controller.show_frame(callPage)       # showing the next frame in ui
 
 
 class callPage(tk.Frame):
@@ -138,7 +137,7 @@ class callPage(tk.Frame):
         waitRbtn = tk.Radiobutton(self, text="Wait", variable=var, value=2,
                                   command=lambda: modeSelect())
 
-        recvRbtn = tk.Radiobutton(self, text="receive", variable=var, value=3,
+        recvRbtn = tk.Radiobutton(self, text="Receive", variable=var, value=3,
                                   command=lambda: modeSelect())
 
         sendRbtn.grid(row=8, column=0,padx=10, pady=5, sticky="nsew")
@@ -153,12 +152,12 @@ class callPage(tk.Frame):
         def modeSelect():
             if var.get() == 1:
                 t = threading.Thread(target=recordAndSend, args = (miniDisplay, ))
-                t.start()
+                t.start()                   #starts the recording and sending process
             elif var.get() == 2:
                 pass
             else:
                 t = threading.Thread(target=receive, args = (miniDisplay, ))
-                t.start()
+                t.start()                   #starts the retreiving process
         def disconnectBtn_clicked():
             sys.exit(0)
 
